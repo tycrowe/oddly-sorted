@@ -16,20 +16,27 @@ public class OddlySorted {
         int[] example4 = new int[]{};
         int[] example5 = new int[]{42};
 
-        System.out.println(Arrays.toString(zigZag(example1)));
-        System.out.println(Arrays.toString(zigZag(example2)));
-        System.out.println(Arrays.toString(zigZag(example3)));
-        System.out.println(Arrays.toString(zigZag(example4)));
-        System.out.println(Arrays.toString(zigZag(example5)));
+        System.out.println(Arrays.toString(zigZagDumb(example1)));
+        System.out.println(Arrays.toString(zigZagDumb(example2)));
+        System.out.println(Arrays.toString(zigZagDumb(example3)));
+        System.out.println(Arrays.toString(zigZagDumb(example4)));
+        System.out.println(Arrays.toString(zigZagDumb(example5)));
+
+        System.out.println(Arrays.toString(zipZagSmart(example1)));
+        System.out.println(Arrays.toString(zipZagSmart(example2)));
+        System.out.println(Arrays.toString(zipZagSmart(example3)));
+        System.out.println(Arrays.toString(zipZagSmart(example4)));
+        System.out.println(Arrays.toString(zipZagSmart(example5)));
     }
 
     /**
      * Sorts an array of numbers in an altering pattern.
      * First number is the largest, second is smallest, third is second largest, and so on.
+     * I want to demonstrate usage of streams here.
      * @param nums  - An array of numbers, of n size.
-     * @return      - A new array that has been sorted.
+     * @return      - A new array that has been sorted in zigzag fashion.
      */
-    public int[] zigZag(int[] nums) {
+    public int[] zigZagDumb(int[] nums) {
         try {
             if (nums.length == 0) throw new Exception("Integer is empty.");
             if (nums.length == 1) return nums;
@@ -63,6 +70,29 @@ public class OddlySorted {
             LOGGER.log(Level.SEVERE, e.getMessage());
             return null;
         }
+    }
+
+    /**
+     * We can improve the efficiency of the program by sorting the list first, then alternating reading from both
+     * ends of the sorted array.
+     * @param nums  - An array of numbers, of n size.
+     * @return      - A new array that has been sorted in zigzag fashion.
+     */
+    public int[] zipZagSmart(int[] nums) {
+        if (nums.length <= 1) return nums;
+
+        Arrays.sort(nums);
+        int[] result = new int[nums.length];
+        int leftIndex = 0, rightIndex = nums.length - 1;
+
+        for (int i = 0; i < nums.length; i++) {
+            if (i % 2 == 0)
+                result[i] = nums[rightIndex--];
+            else
+                result[i] = nums[leftIndex++];
+        }
+
+        return result;
     }
 
     public static void main(String[] args) {
